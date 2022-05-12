@@ -2,13 +2,9 @@
 
 [![codecov](https://codecov.io/gh/ucsb-cs156-s22/team03-s22-6pm-4/branch/main/graph/badge.svg?token=r1nOJykRos)](https://codecov.io/gh/ucsb-cs156-s22/team03-s22-6pm-4)
 
-Deployed Heroku app link:
+* Production deployment: <https://s22-6pm-4-team02.herokuapp.com/>
 
-* <https://s22-6pm-4-team02.herokuapp.com/>
-
-Deployed Heroku qa app link:
-
-* <https://s22-6pm-4-team02-qa.herokuapp.com/> 
+* QA deployment: <https://s22-6pm-4-team02-qa.herokuapp.com/>
 
 TODO: Add correct links to the -docs and -docs qa GitHub pages sites
 
