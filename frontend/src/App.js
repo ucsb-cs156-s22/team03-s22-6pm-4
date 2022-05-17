@@ -9,6 +9,13 @@ import TodosEditPage from "main/pages/Todos/TodosEditPage";
 
 import DiningCommonsIndexPage from "main/pages/DiningCommons/DiningCommonsIndexPage";
 
+import MenuItemsIndexPage from "main/pages/MenuItems/MenuItemsIndexPage";
+import OrganizationsIndexPage from "main/pages/Organizations/OrganizationsIndexPage";
+import RecommendationsIndexPage from "main/pages/Recommendations/RecommendationsIndexPage";
+import ReviewsIndexPage from "main/pages/Reviews/ReviewsIndexPage";
+import HelpRequestsIndexPage from "main/pages/HelpRequests/HelpRequestsIndexPage";
+import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
+
 import UCSBDatesIndexPage from "main/pages/UCSBDates/UCSBDatesIndexPage";
 import UCSBDatesCreatePage from "main/pages/UCSBDates/UCSBDatesCreatePage";
 import UCSBDatesEditPage from "main/pages/UCSBDates/UCSBDatesEditPage";
@@ -44,6 +51,48 @@ function App() {
           hasRole(currentUser, "ROLE_USER") && (
             <>
               <Route exact path="/diningCommons/list" element={<DiningCommonsIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/menuItems/list" element={<MenuItemsIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/organizations/list" element={<OrganizationsIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/recommendations/list" element={<RecommendationsIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/reviews/list" element={<ReviewsIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/helpRequests/list" element={<HelpRequestsIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/articles/list" element={<ArticlesIndexPage />} />
             </>
           )
         }
