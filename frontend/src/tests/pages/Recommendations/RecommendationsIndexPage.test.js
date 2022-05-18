@@ -86,10 +86,10 @@ describe("RecommendationsIndexPage tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-
-        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-code`)).toHaveTextContent("de-la-guerra"); } );
-        expect(getByTestId(`${testId}-cell-row-1-col-code`)).toHaveTextContent("ortega");
-        expect(getByTestId(`${testId}-cell-row-2-col-code`)).toHaveTextContent("portola");
+        
+        await waitFor(  () => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); } );
+        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
+        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
 
     });
 
@@ -106,9 +106,9 @@ describe("RecommendationsIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-code`)).toHaveTextContent("de-la-guerra"); });
-        expect(getByTestId(`${testId}-cell-row-1-col-code`)).toHaveTextContent("ortega");
-        expect(getByTestId(`${testId}-cell-row-2-col-code`)).toHaveTextContent("portola");
+        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
+        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
+        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
 
     });
 
@@ -128,14 +128,14 @@ describe("RecommendationsIndexPage tests", () => {
 
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(3); });
 
-        const expectedHeaders = ['Code',  'Name', 'Sack Meal?','Takeout Meal?','Dining Cam?','Latitude','Longitude'];
-    
+        const expectedHeaders = ['Date Needed', 'Date Requested', 'Done?', 'Explanation', 'Id', 'Professor Email', 'Requester Email'];
+        
         expectedHeaders.forEach((headerText) => {
           const header = getByText(headerText);
           expect(header).toBeInTheDocument();
         });
 
-        expect(queryByTestId(`${testId}-cell-row-0-col-code`)).not.toBeInTheDocument();
+        expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
 
     test("test what happens when you click delete, admin", async () => {
@@ -143,7 +143,7 @@ describe("RecommendationsIndexPage tests", () => {
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/Recommendation/all").reply(200, recommendationsFixtures.threeRecommendations);
-        axiosMock.onDelete("/api/Recommendation", {params: {code: "de-la-guerra"}}).reply(200, "Recommendations with id de-la-guerra was deleted");
+        axiosMock.onDelete("/api/Recommendation", {params: {id: "1"}}).reply(200, "Recommendation with id 1 was deleted");
 
 
         const { getByTestId } = render(
@@ -154,9 +154,9 @@ describe("RecommendationsIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-code`)).toBeInTheDocument(); });
+        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toBeInTheDocument(); });
 
-       expect(getByTestId(`${testId}-cell-row-0-col-code`)).toHaveTextContent("de-la-guerra"); 
+       expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); 
 
 
         const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
@@ -164,10 +164,9 @@ describe("RecommendationsIndexPage tests", () => {
        
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Recommendations with id de-la-guerra was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("Recommendation with id 1 was deleted") });
 
     });
 
 });
-
 
