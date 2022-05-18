@@ -38,11 +38,13 @@ export default function OrganizationsTable({ organizations, _currentUser }) { //
         },
         {
             Header: 'Inactive?',
-            accessor: 'inactive',
+            id: 'inactive', // needed for tests
             accessor: (row, _rowIndex) => String(row.inactive) // hack needed for boolean values to show up
    
         }
     ];
+
+    const testid = "OrganizationsTable"
 
     // const columnsIfAdmin = [
     //     ...columns,
@@ -56,6 +58,6 @@ export default function OrganizationsTable({ organizations, _currentUser }) { //
     return <OurTable
         data={organizations}
         columns={columnsToDisplay}
-        testid={"OrganizationsTable"}
+        testid={testid}
     />;
 };
