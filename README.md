@@ -9,6 +9,8 @@
 * Storybook (production): <https://ucsb-cs156-s22.github.io/team03-s22-6pm-4-docs/>
 * Storybook (development/qa): <https://ucsb-cs156-s22.github.io/team03-s22-6pm-4-docs-qa/>
 
+* Smiley face: 😺
+
 
 # Setup before running application
 
