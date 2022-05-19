@@ -63,6 +63,6 @@ export default function MenuItemsTable({ menuItems, currentUser }) {
     return <OurTable
         data={menuItems}
         columns={columnsToDisplay}
-        testid={"DiningCommonsMenuItem"}
+        testid={"MenuItemsTable"}
     />;
 };
