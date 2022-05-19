@@ -37,8 +37,8 @@ export default function MenuItemsTable({ menuItems, currentUser }) {
     const columns = [
         {
             Header: 'Id',
-            accessor: 'id', 
-            // accessor: (row, _rowIndex) => String(row.id) // hack needed for boolean values to show up
+            id: 'id', 
+            accessor: (row, _rowIndex) => String(row.id) // hack needed for boolean values to show up
         },
         {
             Header: 'Dining Commons Code',

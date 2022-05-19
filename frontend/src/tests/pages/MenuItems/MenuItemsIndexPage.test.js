@@ -13,6 +13,7 @@ import _mockConsole from "jest-mock-console";
 
 
 const mockToast = jest.fn();
+
 jest.mock('react-toastify', () => {
     const originalModule = jest.requireActual('react-toastify');
     return {
@@ -143,7 +144,7 @@ describe("MenuItemsIndexPage tests", () => {
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").reply(200, menuItemsFixtures.threeMenuItems);
-        axiosMock.onDelete("/api/UCSBDiningCommonsMenuItem").reply(200, "MenuItem with id 1 was deleted");
+        axiosMock.onDelete("/api/UCSBDiningCommonsMenuItem", {params: {id: "1"}}).reply(200, "MenuItem with id 1 was deleted");
 
 
         const { getByTestId } = render(
