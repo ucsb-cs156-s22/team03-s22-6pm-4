@@ -46,7 +46,7 @@ export default function ArticlesTable({ articles, currentUser }) {
         },
         {
             Header: 'Date',
-            accessor: 'localDateTime',
+            accessor: 'dateAdded',
         }
     ];
 
