@@ -67,6 +67,7 @@ describe("UCSBDatesTable tests", () => {
       </QueryClientProvider>
 
     );
+    
 
     const expectedHeaders = ["id", "QuarterYYYYQ", "Name", "Date"];
     const expectedFields = ["id", "quarterYYYYQ", "name", "localDateTime"];

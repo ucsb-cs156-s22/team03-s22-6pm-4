@@ -170,4 +170,3 @@ describe("MenuItemsIndexPage tests", () => {
 
 });
 
-
