@@ -35,11 +35,13 @@ export default function HelpRequestsTable({ helpRequests, _currentUser }) {
         }
     ];
 
+    const testid = "HelpRequestsTable";
+
     const columnsToDisplay = columns;
 
     return <OurTable
         data={helpRequests}
         columns={columnsToDisplay}
-        testid={"HelpRequestsTable"}
+        testid={testid}
     />;
 };
