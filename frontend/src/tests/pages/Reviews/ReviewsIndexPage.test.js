@@ -1,4 +1,4 @@
-import { _fireEvent, render, waitFor } from "@testing-library/react"; // react testing library
+import { fireEvent, render, waitFor } from "@testing-library/react"; // react testing library
 import { QueryClient, QueryClientProvider } from "react-query"; // this library communicates between the frontend and the backend
 import { MemoryRouter } from "react-router-dom"; // simulates navigation from page to page
 import ReviewsIndexPage from "main/pages/Reviews/ReviewsIndexPage";
@@ -6,10 +6,10 @@ import ReviewsIndexPage from "main/pages/Reviews/ReviewsIndexPage";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures"; // simulate what type of user is logged in
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures"; // way for frontend to get certain kinds of information from the backend
-// import { ReviewsFixtures } from "fixtures/ReviewsFixtures";
+import { reviewsFixtures } from "fixtures/reviewsFixtures";
 import axios from "axios"; // i know this one
 import AxiosMockAdapter from "axios-mock-adapter"; // simulate http requests to backend
-import mockConsole from "jest-mock-console"; // simulates console logs and errors etc.
+import _mockConsole from "jest-mock-console"; // simulates console logs and errors etc.
 
 
 // check whether toast would have been produced
@@ -75,54 +75,50 @@ describe("ReviewsIndexPage tests", () => {
 
     });
 
-    /*
-    test("renders three dates without crashing for regular user", async () => {
+    test("renders three reviews without crashing for regular user", async () => {
         setupUserOnly();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/ucsbdates/all").reply(200, ucsbDatesFixtures.threeDates);
+        axiosMock.onGet("/api/MenuItemReview/all").reply(200, reviewsFixtures.threeMenuReviews);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <UCSBDatesIndexPage />
+                    <ReviewsIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
         await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
         expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
+        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
 
     });
 
-    test("renders three dates without crashing for admin user", async () => {
+    test("renders three reviews without crashing for admin user", async () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/ucsbdates/all").reply(200, ucsbDatesFixtures.threeDates);
+        axiosMock.onGet("/api/MenuItemReview/all").reply(200, reviewsFixtures.threeMenuReviews);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <UCSBDatesIndexPage />
+                    <ReviewsIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
         await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
         expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
+        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
 
     });
 
-    */
 
     test("renders empty table when backend unavailable, user only", async () => {
         setupUserOnly();
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/MenuItemReview/all").timeout();
-
-        const restoreConsole = mockConsole();
 
         const { queryByTestId } = render(
             <QueryClientProvider client={queryClient}>
@@ -133,25 +129,23 @@ describe("ReviewsIndexPage tests", () => {
         );
 
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
 
         expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
 
-    /*
 
     test("test what happens when you click delete, admin", async () => {
         setupAdminUser();
 
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/ucsbdates/all").reply(200, ucsbDatesFixtures.threeDates);
-        axiosMock.onDelete("/api/ucsbdates").reply(200, "UCSBDate with id 1 was deleted");
+        axiosMock.onGet("/api/MenuItemReview/all").reply(200, reviewsFixtures.threeMenuReviews);
+        axiosMock.onDelete("/api/MenuItemReview").reply(200, "MenuItemReview with id 1 was deleted");
 
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <UCSBDatesIndexPage />
+                    <ReviewsIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -166,10 +160,9 @@ describe("ReviewsIndexPage tests", () => {
        
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("UCSBDate with id 1 was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("MenuItemReview with id 1 was deleted") });
 
     });
-    */
 
 });
 
