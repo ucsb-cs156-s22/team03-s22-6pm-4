@@ -31,14 +31,17 @@ export default function HelpRequestsTable({ helpRequests, _currentUser }) {
         {
             Header: 'Solved?',
             accessor: 'solved',
+            accessor: (row, _rowIndex) => String(row.solved) // hack needed for boolean values to show up
         }
     ];
+
+    const testid = "HelpRequestsTable";
 
     const columnsToDisplay = columns;
 
     return <OurTable
         data={helpRequests}
         columns={columnsToDisplay}
-        testid={"HelpRequestsTable"}
+        testid={testid}
     />;
 };
