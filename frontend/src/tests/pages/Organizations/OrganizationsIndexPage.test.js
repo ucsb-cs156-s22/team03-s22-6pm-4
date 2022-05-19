@@ -1,4 +1,4 @@
-import { _fireEvent, render, waitFor } from "@testing-library/react"; // react testing library
+import { fireEvent, render, waitFor } from "@testing-library/react"; // react testing library
 import { QueryClient, QueryClientProvider } from "react-query"; // this library communicates between the frontend and the backend
 import { MemoryRouter } from "react-router-dom"; // simulates navigation from page to page
 import OrganizationsIndexPage from "main/pages/Organizations/OrganizationsIndexPage";
@@ -9,7 +9,7 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures"; // way for fro
 import { organizationsFixtures } from "fixtures/organizationsFixtures";
 import axios from "axios"; // i know this one
 import AxiosMockAdapter from "axios-mock-adapter"; // simulate http requests to backend
-import mockConsole from "jest-mock-console"; // simulates console logs and errors etc.
+import _mockConsole from "jest-mock-console"; // simulates console logs and errors etc.
 
 
 // check whether toast would have been produced
@@ -119,9 +119,9 @@ describe("OrganizationsIndexPage tests", () => {
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/UCSBOrganization/all").timeout();
 
-        const restoreConsole = mockConsole();
+        // const restoreConsole = mockConsole(); // removed in frontend-testing-part-2
 
-        const { queryByTestId } = render(
+        const { queryByTestId, getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <OrganizationsIndexPage />
@@ -129,33 +129,39 @@ describe("OrganizationsIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
+        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); }); // changed to 3 in frontend-testing-part-2
+        // restoreConsole(); // removed in frontend-testing-part-2
+
+        const expectedHeaders = ['Organization Code',  'Organization Translation (Abbreviated)', 'Organization Translation','Inactive?'];
+    
+        expectedHeaders.forEach((headerText) => {
+            const header = getByText(headerText);
+            expect(header).toBeInTheDocument();
+        });
 
         expect(queryByTestId(`${testId}-cell-row-0-col-orgCode`)).not.toBeInTheDocument();
     });
 
-    /*
 
     test("test what happens when you click delete, admin", async () => {
         setupAdminUser();
 
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/ucsbdates/all").reply(200, ucsbDatesFixtures.threeDates);
-        axiosMock.onDelete("/api/ucsbdates").reply(200, "UCSBDate with id 1 was deleted");
+        axiosMock.onGet("/api/UCSBOrganization/all").reply(200, organizationsFixtures.threeOrganizations);
+        axiosMock.onDelete("/api/UCSBOrganization", {params: {orgCode:"sky"}}).reply(200, "Organization with orgCode sky was deleted");
 
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <UCSBDatesIndexPage />
+                    <OrganizationsIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toBeInTheDocument(); });
+        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-orgCode`)).toBeInTheDocument(); });
 
-       expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); 
+       expect(getByTestId(`${testId}-cell-row-0-col-orgCode`)).toHaveTextContent("sky"); 
 
 
         const deleteButton = getByTestId(`${testId}-cell-row-0-col-Delete-button`);
@@ -163,10 +169,9 @@ describe("OrganizationsIndexPage tests", () => {
        
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("UCSBDate with id 1 was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("Organization with orgCode sky was deleted") });
 
     });
-    */
 
 });
 
