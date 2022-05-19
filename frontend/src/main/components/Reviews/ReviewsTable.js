@@ -2,7 +2,7 @@ import OurTable, { _ButtonColumn} from "main/components/OurTable";
 // import { useBackendMutation } from "main/utils/useBackend";
 // import {  onDeleteSuccess } from "main/utils/UCSBDateUtils"
 // import { useNavigate } from "react-router-dom";
-//import { _hasRole } from "main/utils/currentUser";
+// import { _hasRole } from "main/utils/currentUser";
 
 
 // export function cellToAxiosParamsDelete(cell) {
@@ -27,22 +27,12 @@ export default function ReviewsTable({ reviews, _currentUser }) {
     // const deleteMutation = useBackendMutation(
     //     cellToAxiosParamsDelete,
     //     { onSuccess: onDeleteSuccess },
-    //     ["/api/ucsbdiningcommons/all"]
+    //     ["/api/MenuItemReview/all"]
     // );
     // Stryker enable all 
 
     // Stryker disable next-line all : TODO try to make a good test for this
     // const deleteCallback = async (cell) => { deleteMutation.mutate(cell); }
-
-    // {
-    //     "id": 2,
-    //     "itemId": 3,
-    //     "reviewerEmail": "gaucho@ucsb.edu",
-    //     "stars": 4,
-    //     "dateReviewed": "2022-04-20",
-    //     "comments": "WAY too much to eat"
-    //   }
-
 
     const columns = [
         {
@@ -55,19 +45,19 @@ export default function ReviewsTable({ reviews, _currentUser }) {
         },
         {
             Header: 'Reviewer Email',
-            id: 'reviewerEmail',
+            accessor: 'reviewerEmail',
         },
         {
             Header: 'Stars (Rating)',
-            id: 'stars',
+            accessor: 'stars',
         },
         {
             Header: 'Date Reviewed',
-            id: 'dateReviewed',
+            accessor: 'dateReviewed',
         },
         {
             Header: 'Comments',
-            id: 'comments',
+            accessor: 'comments',
         }
     ];
 
