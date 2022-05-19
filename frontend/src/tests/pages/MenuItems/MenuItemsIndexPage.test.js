@@ -9,7 +9,7 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { menuItemsFixtures } from "fixtures/menuItemsFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import mockConsole from "jest-mock-console";
+import _mockConsole from "jest-mock-console";
 
 
 const mockToast = jest.fn();
@@ -118,9 +118,7 @@ describe("MenuItemsIndexPage tests", () => {
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").timeout();
 
-        const restoreConsole = mockConsole();
-
-        const { queryByTestId } = render(
+        const { queryByTestId, getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <MenuItemsIndexPage />
@@ -128,8 +126,14 @@ describe("MenuItemsIndexPage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
+        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(3); });
+        // restoreConsole();
+        const expectedHeaders = ['Id', 'Dining Commons Code', 'Name'];
+
+        expectedHeaders.forEach((headerText) => {
+          const header = getByText(headerText);
+          expect(header).toBeInTheDocument();
+        });
 
         expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
