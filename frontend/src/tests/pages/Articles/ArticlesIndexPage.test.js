@@ -1,15 +1,15 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import MenuItemsIndexPage from "main/pages/MenuItems/MenuItemsIndexPage";
+import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
 
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { menuItemsFixtures } from "fixtures/menuItemsFixtures";
+import { articlesFixtures } from "fixtures/articlesFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import _mockConsole from "jest-mock-console";
+import mockConsole from "jest-mock-console";
 
 
 const mockToast = jest.fn();
@@ -22,11 +22,11 @@ jest.mock('react-toastify', () => {
     };
 });
 
-describe("MenuItemsIndexPage tests", () => {
+describe("ArticlesIndexPage tests", () => {
 
     const axiosMock =new AxiosMockAdapter(axios);
 
-    const testId = "MenuItemsTable";
+    const testId = "ArticlesTable";
 
     const setupUserOnly = () => {
         axiosMock.reset();
@@ -45,12 +45,12 @@ describe("MenuItemsIndexPage tests", () => {
     test("renders without crashing for regular user", () => {
         setupUserOnly();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").reply(200, []);
+        axiosMock.onGet("/api/Article/all").reply(200, []);
 
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <MenuItemsIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -61,12 +61,12 @@ describe("MenuItemsIndexPage tests", () => {
     test("renders without crashing for admin user", () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").reply(200, []);
+        axiosMock.onGet("/api/Article/all").reply(200, []);
 
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <MenuItemsIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -74,15 +74,15 @@ describe("MenuItemsIndexPage tests", () => {
 
     });
 
-    test("renders three menuItems without crashing for regular user", async () => {
+    test("renders three articles without crashing for regular user", async () => {
         setupUserOnly();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").reply(200, menuItemsFixtures.threeMenuItems);
+        axiosMock.onGet("/api/Article/all").reply(200, articlesFixtures.threeArticles);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <MenuItemsIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -93,15 +93,15 @@ describe("MenuItemsIndexPage tests", () => {
 
     });
 
-    test("renders three menuItems without crashing for admin user", async () => {
+    test("renders three articles without crashing for admin user", async () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").reply(200, menuItemsFixtures.threeMenuItems);
+        axiosMock.onGet("/api/Article/all").reply(200, articlesFixtures.threeArticles);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <MenuItemsIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -116,24 +116,20 @@ describe("MenuItemsIndexPage tests", () => {
         setupUserOnly();
 
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").timeout();
+        axiosMock.onGet("/api/Article/all").timeout();
 
-        const { queryByTestId, getByText } = render(
+        const restoreConsole = mockConsole();
+
+        const { queryByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <MenuItemsIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(3); });
-        // restoreConsole();
-        const expectedHeaders = ['Id', 'Dining Commons Code', 'Name'];
-
-        expectedHeaders.forEach((headerText) => {
-          const header = getByText(headerText);
-          expect(header).toBeInTheDocument();
-        });
+        await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
+        restoreConsole();
 
         expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
@@ -142,14 +138,14 @@ describe("MenuItemsIndexPage tests", () => {
         setupAdminUser();
 
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/UCSBDiningCommonsMenuItem/all").reply(200, menuItemsFixtures.threeMenuItems);
-        axiosMock.onDelete("/api/UCSBDiningCommonsMenuItem").reply(200, "MenuItem with id 1 was deleted");
+        axiosMock.onGet("/api/Article/all").reply(200, articlesFixtures.threeArticles);
+        axiosMock.onDelete("/api/Article").reply(200, "Article with id 1 was deleted");
 
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <MenuItemsIndexPage />
+                    <ArticlesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -164,9 +160,10 @@ describe("MenuItemsIndexPage tests", () => {
        
         fireEvent.click(deleteButton);
 
-        await waitFor(() => { expect(mockToast).toBeCalledWith("MenuItem with id 1 was deleted") });
+        await waitFor(() => { expect(mockToast).toBeCalledWith("Article with id 1 was deleted") });
 
     });
 
 });
+
 
