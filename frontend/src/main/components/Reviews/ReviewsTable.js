@@ -55,19 +55,19 @@ export default function ReviewsTable({ reviews, _currentUser }) {
         },
         {
             Header: 'Reviewer Email',
-            accessor: 'reviewerEmail',
+            id: 'reviewerEmail',
         },
         {
             Header: 'Stars (Rating)',
-            accessor: 'stars',
+            id: 'stars',
         },
         {
             Header: 'Date Reviewed',
-            accessor: 'dateReviewed',
+            id: 'dateReviewed',
         },
         {
             Header: 'Comments',
-            accessor: 'comments',
+            id: 'comments',
         }
     ];
 
