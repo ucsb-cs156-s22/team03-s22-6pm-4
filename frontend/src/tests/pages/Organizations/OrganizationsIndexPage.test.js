@@ -6,7 +6,7 @@ import OrganizationsIndexPage from "main/pages/Organizations/OrganizationsIndexP
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures"; // simulate what type of user is logged in
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures"; // way for frontend to get certain kinds of information from the backend
-// import { OrganizationsFixtures } from "fixtures/OrganizationsFixtures";
+import { organizationsFixtures } from "fixtures/organizationsFixtures";
 import axios from "axios"; // i know this one
 import AxiosMockAdapter from "axios-mock-adapter"; // simulate http requests to backend
 import mockConsole from "jest-mock-console"; // simulates console logs and errors etc.
@@ -75,46 +75,43 @@ describe("OrganizationsIndexPage tests", () => {
 
     });
 
-    /*
-    test("renders three dates without crashing for regular user", async () => {
+    test("renders three organizations without crashing for regular user", async () => {
         setupUserOnly();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/ucsbdates/all").reply(200, ucsbDatesFixtures.threeDates);
+        axiosMock.onGet("/api/UCSBOrganization/all").reply(200, organizationsFixtures.threeOrganizations);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <UCSBDatesIndexPage />
+                    <OrganizationsIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
-        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
+        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-orgCode`)).toHaveTextContent("sky"); });
+        expect(getByTestId(`${testId}-cell-row-1-col-orgCode`)).toHaveTextContent("osli");
+        expect(getByTestId(`${testId}-cell-row-2-col-orgCode`)).toHaveTextContent("krc");
 
     });
 
-    test("renders three dates without crashing for admin user", async () => {
+    test("renders three organizations without crashing for admin user", async () => {
         setupAdminUser();
         const queryClient = new QueryClient();
-        axiosMock.onGet("/api/ucsbdates/all").reply(200, ucsbDatesFixtures.threeDates);
+        axiosMock.onGet("/api/UCSBOrganization/all").reply(200, organizationsFixtures.threeOrganizations);
 
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <UCSBDatesIndexPage />
+                    <OrganizationsIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
 
-        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("1"); });
-        expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("2");
-        expect(getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("3");
+        await waitFor(() => { expect(getByTestId(`${testId}-cell-row-0-col-orgCode`)).toHaveTextContent("sky"); });
+        expect(getByTestId(`${testId}-cell-row-1-col-orgCode`)).toHaveTextContent("osli");
+        expect(getByTestId(`${testId}-cell-row-2-col-orgCode`)).toHaveTextContent("krc");
 
     });
-
-    */
 
     test("renders empty table when backend unavailable, user only", async () => {
         setupUserOnly();
@@ -135,7 +132,7 @@ describe("OrganizationsIndexPage tests", () => {
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
         restoreConsole();
 
-        expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
+        expect(queryByTestId(`${testId}-cell-row-0-col-orgCode`)).not.toBeInTheDocument();
     });
 
     /*
