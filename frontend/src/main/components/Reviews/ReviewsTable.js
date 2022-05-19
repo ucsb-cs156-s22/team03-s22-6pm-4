@@ -1,19 +1,19 @@
 import OurTable, { ButtonColumn} from "main/components/OurTable";
 import { useBackendMutation } from "main/utils/useBackend";
-import {  onDeleteSuccess } from "main/utils/UCSBDateUtils"
+import {  cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/ReviewsTableUtils"
 // import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
 
-export function cellToAxiosParamsDelete(cell) {
-    return {
-        url: "/api/MenuItemReview",
-        method: "DELETE",
-        params: {
-            code: cell.row.values.code
-        }
-    }
-}
+// export function cellToAxiosParamsDelete(cell) {
+//     return {
+//         url: "/api/MenuItemReview",
+//         method: "DELETE",
+//         params: {
+//             code: cell.row.values.id
+//         }
+//     }
+// }
 
 export default function ReviewsTable({ reviews, currentUser }) {
 
@@ -76,6 +76,6 @@ export default function ReviewsTable({ reviews, currentUser }) {
     return <OurTable
         data={reviews}
         columns={columnsToDisplay}
-        testid={testid}
+        testid={"ReviewsTable"}
     />;
 };
