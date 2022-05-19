@@ -50,7 +50,6 @@ export default function HelpRequestsTable({ helpRequests, currentUser }) {
         },
         {
             Header: 'Solved?',
-            accessor: 'solved',
             accessor: (row, _rowIndex) => String(row.solved) // hack needed for boolean values to show up
         }
     ];
