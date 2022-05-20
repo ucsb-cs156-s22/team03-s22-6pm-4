@@ -25,8 +25,9 @@ export default function HelpRequestsTable({ helpRequests, currentUser }) {
 
     const columns = [ 
         {
-            Header: 'id',
-            accessor: 'id', // accessor is the "key" in the data
+            Header: 'Id',
+            id: 'id',
+            accessor: (row, _rowIndex) => String(row.id)
         },
         {
             Header: 'Requester Email',
@@ -50,6 +51,7 @@ export default function HelpRequestsTable({ helpRequests, currentUser }) {
         },
         {
             Header: 'Solved?',
+            id: 'isSolved',
             accessor: (row, _rowIndex) => String(row.solved) // hack needed for boolean values to show up
         }
     ];
