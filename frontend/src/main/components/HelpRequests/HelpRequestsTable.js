@@ -15,18 +15,22 @@ export function cellToAxiosParamsDelete(cell) {
 
 export default function HelpRequestsTable({ helpRequests, currentUser }) {
 
+    // Stryker disable all : hard to test for query caching
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
         ["/api/HelpRequest/all"]
     );
+    // Stryker enable all
 
+    // Stryker disable next-line all : TODO try to make a good test for this
     const deleteCallback = async (cell) => { deleteMutation.mutate(cell); }
 
     const columns = [ 
         {
-            Header: 'id',
-            accessor: 'id', // accessor is the "key" in the data
+            Header: 'Id',
+            id: 'id',
+            accessor: (row, _rowIndex) => String(row.id)
         },
         {
             Header: 'Requester Email',
@@ -50,6 +54,7 @@ export default function HelpRequestsTable({ helpRequests, currentUser }) {
         },
         {
             Header: 'Solved?',
+            id: 'isSolved',
             accessor: (row, _rowIndex) => String(row.solved) // hack needed for boolean values to show up
         }
     ];

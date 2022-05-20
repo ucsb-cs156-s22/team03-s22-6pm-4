@@ -9,7 +9,7 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { helpRequestsFixtures } from "fixtures/helpRequestsFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import mockConsole from "jest-mock-console";
+import _mockConsole from "jest-mock-console";
 
 
 const mockToast = jest.fn();
@@ -118,9 +118,8 @@ describe("HelpRequestsIndexPage tests", () => {
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/HelpRequest/all").timeout();
 
-        const restoreConsole = mockConsole();
 
-        const { queryByTestId } = render(
+        const { queryByTestId, getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
                     <HelpRequestsIndexPage />
@@ -129,7 +128,14 @@ describe("HelpRequestsIndexPage tests", () => {
         );
 
         await waitFor(() => { expect(axiosMock.history.get.length).toBeGreaterThanOrEqual(1); });
-        restoreConsole();
+        // restoreConsole();
+
+        const expectedHeaders = ['Id', 'Requester Email', 'Team ID', 'Table or Breakout Room?', 'Time of Request', 'Explanation', 'Solved?']
+        
+        expectedHeaders.forEach((headerText) => {
+            const header = getByText(headerText);
+            expect(header).toBeInTheDocument();
+        });
 
         expect(queryByTestId(`${testId}-cell-row-0-col-id`)).not.toBeInTheDocument();
     });
@@ -139,7 +145,7 @@ describe("HelpRequestsIndexPage tests", () => {
 
         const queryClient = new QueryClient();
         axiosMock.onGet("/api/HelpRequest/all").reply(200, helpRequestsFixtures.threeRequests);
-        axiosMock.onDelete("/api/HelpRequest").reply(200, "HelpRequest with id 1 was deleted");
+        axiosMock.onDelete("/api/HelpRequest", {params: {id: "1"}}).reply(200, "HelpRequest with id 1 was deleted");
 
 
         const { getByTestId } = render(
