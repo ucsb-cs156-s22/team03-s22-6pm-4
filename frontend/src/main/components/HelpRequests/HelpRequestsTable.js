@@ -15,12 +15,15 @@ export function cellToAxiosParamsDelete(cell) {
 
 export default function HelpRequestsTable({ helpRequests, currentUser }) {
 
+    // Stryker disable all : hard to test for query caching
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
         ["/api/HelpRequest/all"]
     );
+    // Stryker enable all
 
+    // Stryker disable next-line all : TODO try to make a good test for this
     const deleteCallback = async (cell) => { deleteMutation.mutate(cell); }
 
     const columns = [ 
